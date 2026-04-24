@@ -170,7 +170,7 @@ def run_yoga_agent(query: str, user_doc: dict, language: str = "Hinglish") -> di
     """
     Runs the agent using google-genai (SDK) with ADK-loaded skills.
     """
-    api_key, model_id = get_config()
+    api_key, model_id, _ = get_config()
     client = genai.Client(api_key=api_key)
     
     # 1. Load Skills using ADK
