@@ -28,19 +28,32 @@ from google.adk.skills import load_skill_from_dir
 dotenv_path = pathlib.Path(__file__).parent / ".env"
 
 def get_config():
-    # dotenv_values reads the file ONLY and returns a dictionary
-    config = dotenv_values(dotenv_path)
-    api_key = config.get("GEMINI_API_KEY", "")
-    model = config.get("GEMINI_MODEL", "gemini-2.5-flash").replace("models/", "")
-    return api_key, model
+    # 1. Try system environment variables first (for Render/Production)
+    api_key = os.environ.get("GEMINI_API_KEY")
+    model = os.environ.get("GEMINI_MODEL")
 
-api_key, model = get_config()
+    # 2. Fallback to local .env file (for Local Development)
+    source = "System Environment"
+    if not api_key:
+        config = dotenv_values(dotenv_path)
+        api_key = config.get("GEMINI_API_KEY", "")
+        model = config.get("GEMINI_MODEL", "gemini-2.5-flash-lite")
+        source = f".env file ({dotenv_path})"
+
+    if model:
+        model = model.replace("models/", "")
+    else:
+        model = "gemini-2.5-flash-lite"
+        
+    return api_key, model, source
+
+api_key, model, source = get_config()
 if not api_key:
-    print(f"[agent] ERROR: GEMINI_API_KEY not found in {dotenv_path}")
-    raise RuntimeError(f"GEMINI_API_KEY not set in {dotenv_path}")
+    print(f"[agent] ERROR: GEMINI_API_KEY not found!")
+    raise RuntimeError(f"GEMINI_API_KEY not set!")
 
 masked_key = f"{api_key[:8]}...{api_key[-4:]}" if len(api_key) > 12 else "****"
-print(f"[agent] Initial Config: Loaded key from .env ({masked_key})")
+print(f"[agent] Initial Config: Loaded key from {source} ({masked_key})")
 print(f"[agent] Initial Config: Using model {model}")
 
 
