@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "motivational_quote": {
+      "type": "string",
+      "description": "A short, inspiring yoga-related quote. Max 15 words."
+    },
+    "practical_tip": {
+      "type": "string",
+      "description": "One actionable tip to stay consistent. Max 20 words."
+    }
+  },
+  "required": ["motivational_quote", "practical_tip"]
+}

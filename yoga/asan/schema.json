@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "asana_name": {
+      "type": "string",
+      "description": "Name of the yoga pose."
+    },
+    "steps": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Step-by-step instructions. Max 5 steps."
+    },
+    "benefits": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Key physical or mental benefits. Max 3."
+    },
+    "precautions": {
+      "type": "string",
+      "description": "Safety warnings or who should avoid this pose."
+    }
+  },
+  "required": ["asana_name", "steps", "benefits"]
+}

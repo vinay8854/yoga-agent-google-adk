@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "physical_benefits": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Max 3 physical benefits."
+    },
+    "mental_benefits": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Max 2 mental benefits."
+    },
+    "expert_note": {
+      "type": "string",
+      "description": "A brief expert tip on consistency. Max 20 words."
+    }
+  },
+  "required": ["physical_benefits", "mental_benefits"]
+}

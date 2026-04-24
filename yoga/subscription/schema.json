@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "plan_summary": {
+      "type": "string",
+      "description": "Explains the available plans briefly. Max 25 words."
+    },
+    "joining_steps": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Max 3 steps to join."
+    },
+    "support_info": {
+      "type": "string",
+      "description": "Where to go for help."
+    }
+  },
+  "required": ["plan_summary", "joining_steps"]
+}

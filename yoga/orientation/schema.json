@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "program_overview": {
+      "type": "string",
+      "description": "Briefly explains how the yoga sessions work. Max 30 words."
+    },
+    "getting_started_steps": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Max 3 simple steps to start. E.g., Join time, Mat setup."
+    }
+  },
+  "required": ["program_overview", "getting_started_steps"]
+}

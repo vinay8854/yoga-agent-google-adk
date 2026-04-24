@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habuild Agent Tester</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3250;
+      --accent: #25d366;
+      --accent2: #128c5e;
+      --user-bg: #005c4b;
+      --agent-bg: #1f2335;
+      --text: #e8eaf0;
+      --muted: #8b92b0;
+      --tag-green: #25d36633;
+      --tag-blue: #3b82f633;
+      --tag-red: #ef444433;
+      --tag-yellow: #f59e0b33;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── LEFT PANEL ─────────────────────────────────────────── */
+    .left-panel {
+      width: 300px;
+      min-width: 260px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 18px 16px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+
+    .panel-header h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .panel-section {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-section h3 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .user-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .user-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin: 4px 3px 0 0;
+    }
+
+    .tag-green {
+      background: var(--tag-green);
+      color: #25d366;
+      border: 1px solid #25d36644;
+    }
+
+    .tag-blue {
+      background: var(--tag-blue);
+      color: #60a5fa;
+      border: 1px solid #3b82f644;
+    }
+
+    .tag-red {
+      background: var(--tag-red);
+      color: #f87171;
+      border: 1px solid #ef444444;
+    }
+
+    .tag-yellow {
+      background: var(--tag-yellow);
+      color: #fbbf24;
+      border: 1px solid #f59e0b44;
+    }
+
+    .skill-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      padding: 5px 0;
+      color: var(--muted);
+    }
+
+    .skill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* Language toggle */
+    .lang-toggle {
+      display: flex;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .lang-btn {
+      flex: 1;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .lang-btn.active {
+      background: var(--accent2);
+      color: #fff;
+    }
+
+    .left-footer {
+      margin-top: auto;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    .btn-primary {
+      background: var(--accent2);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent);
+    }
+
+    /* ── CHAT PANEL ─────────────────────────────────────────── */
+    .chat-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      min-width: 0;
+    }
+
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .agent-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), #0d6b41);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .chat-header-info h3 {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .chat-header-info p {
+      font-size: 12px;
+      color: var(--accent);
+      margin-top: 1px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .chat-messages::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 10px;
+    }
+
+    /* Messages */
+    .msg-row {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .msg-row.user {
+      align-items: flex-end;
+    }
+
+    .msg-row.agent {
+      align-items: flex-start;
+    }
+
+    .msg-bubble {
+      max-width: 70%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      position: relative;
+    }
+
+    .msg-row.user .msg-bubble {
+      background: var(--user-bg);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-row.agent .msg-bubble {
+      background: var(--agent-bg);
+      color: var(--text);
+      border-bottom-left-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .msg-time {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 4px;
+      padding: 0 4px;
+    }
+
+    /* Format analysis bar under agent messages */
+    .format-checks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 6px;
+      max-width: 70%;
+    }
+
+    .check-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .check-pass {
+      background: #25d36622;
+      color: #25d366;
+      border: 1px solid #25d36633;
+    }
+
+    .check-fail {
+      background: #ef444422;
+      color: #f87171;
+      border: 1px solid #ef444433;
+    }
+
+    .check-warn {
+      background: #f59e0b22;
+      color: #fbbf24;
+      border: 1px solid #f59e0b33;
+    }
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 12px 14px;
+      background: var(--agent-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      border-bottom-left-radius: 4px;
+      width: fit-content;
+    }
+
+    .typing-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--muted);
+      animation: bounce 1.2s infinite;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+      }
+
+      30% {
+        transform: translateY(-6px);
+      }
+    }
+
+    /* Input bar */
+    .chat-input-bar {
+      padding: 14px 20px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    #queryInput {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 11px 18px;
+      font-size: 14px;
+      color: var(--text);
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+      max-height: 120px;
+    }
+
+    #queryInput:focus {
+      border-color: var(--accent2);
+    }
+
+    #queryInput::placeholder {
+      color: var(--muted);
+    }
+
+    #sendBtn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent2);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    #sendBtn:hover {
+      background: var(--accent);
+    }
+
+    #sendBtn svg {
+      fill: #fff;
+      width: 20px;
+      height: 20px;
+    }
+
+    #sendBtn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ── RIGHT PANEL ─────────────────────────────────────────── */
+    .right-panel {
+      width: 320px;
+      min-width: 280px;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .tabs {
+      display: flex;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-bottom: 2px solid transparent;
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-content {
+      flex: 1;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .tab-content::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .tab-content::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    .debug-section {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .debug-section-header {
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .debug-section-header:hover {
+      color: var(--text);
+    }
+
+    .debug-section-body {
+      padding: 0 14px 12px;
+    }
+
+    .debug-value {
+      font-size: 12px;
+      color: var(--text);
+      font-family: 'Courier New', monospace;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      white-space: pre-wrap;
+      line-height: 1.5;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .debug-value::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .debug-value::-webkit-scrollbar-thumb {
+      background: var(--border);
+    }
+
+    .debug-empty {
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+      padding: 4px 0;
+    }
+
+    .prompt-text {
+      font-size: 11px;
+      font-family: 'Courier New', monospace;
+      color: #8b92b0;
+      white-space: pre-wrap;
+      line-height: 1.5;
+      padding: 12px 14px;
+    }
+
+    /* Empty state */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--muted);
+      padding: 32px;
+      text-align: center;
+    }
+
+    .empty-state .icon {
+      font-size: 48px;
+    }
+
+    .empty-state h3 {
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .empty-state p {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 500;
+      transition: transform 0.3s ease;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Format rule highlights */
+    .bold-text {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    strong {
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .response-text {
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* Scrollbar global */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── LEFT PANEL ─────────────────────────── -->
+  <aside class="left-panel">
+    <div class="panel-header">
+      <h2>🧘 Habuild Agent Tester</h2>
+    </div>
+
+    <!-- User Profile -->
+    <div class="panel-section" id="userProfileSection">
+      <h3>User Profile</h3>
+      <div class="user-name" id="displayName">...</div>
+      <div style="margin-top:8px;" id="userTags"></div>
+      <div style="margin-top:10px;" id="userMeta" style="font-size:12px;color:var(--muted);line-height:1.8;"></div>
+    </div>
+
+    <!-- Skills -->
+    <div class="panel-section">
+      <h3>Loaded Skills</h3>
+      <div id="skillList">
+        <div class="skill-item" style="color:var(--muted)">Loading...</div>
+      </div>
+    </div>
+
+    <!-- Language -->
+    <div class="panel-section">
+      <h3>Language Mode</h3>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btnHinglish" onclick="setLanguage('Hinglish')">Hinglish</button>
+        <button class="lang-btn" id="btnEnglish" onclick="setLanguage('English')">English</button>
+      </div>
+    </div>
+
+    <div class="left-footer">
+      <button class="btn btn-outline" onclick="clearChat()" style="margin-bottom:8px;">Clear Chat</button>
+      <button class="btn btn-primary" onclick="viewPrompt()">View Full Prompt</button>
+    </div>
+  </aside>
+
+  <!-- ── CHAT PANEL ──────────────────────────── -->
+  <main class="chat-panel">
+    <div class="chat-header">
+      <div class="agent-avatar">🧘</div>
+      <div class="chat-header-info">
+        <h3>Yoga Agent</h3>
+        <p id="agentStatus">● Online · Hinglish mode</p>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="empty-state">
+        <div class="icon">💬</div>
+        <h3>Start chatting</h3>
+        <p>Type any message below to test the agent.<br />The debug panel on the right will show memory, CTX, and format
+          checks for every reply.</p>
+      </div>
+    </div>
+
+    <div class="chat-input-bar">
+      <textarea id="queryInput" rows="1" placeholder="Type your message…" onkeydown="handleKey(event)"
+        oninput="autoResize(this)"></textarea>
+      <button id="sendBtn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+        </svg>
+      </button>
+    </div>
+  </main>
+
+  <!-- ── RIGHT DEBUG PANEL ───────────────────── -->
+  <aside class="right-panel">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('debug')">Debug</button>
+      <button class="tab-btn" onclick="switchTab('ctx')">CTX Block</button>
+      <button class="tab-btn" onclick="switchTab('prompt')">Prompt</button>
+    </div>
+
+    <!-- DEBUG TAB -->
+    <div class="tab-content active" id="tab-debug">
+      <div class="empty-state" id="debugEmpty">
+        <div class="icon">🔍</div>
+        <h3>No data yet</h3>
+        <p>Debug info will appear here after the first agent reply.</p>
+      </div>
+      <div id="debugContent" style="display:none;">
+
+        <div class="debug-section">
+          <div class="debug-section-header" onclick="toggleSection('secResponse')">
+            AGENT RESPONSE <span>▾</span>
+          </div>
+          <div class="debug-section-body" id="secResponse">
+            <div class="debug-value" id="dbgResponse">—</div>
+          </div>
+        </div>
+
+        <div class="debug-section">
+          <div class="debug-section-header" onclick="toggleSection('secMemory')">
+            MEMORY (to save) <span>▾</span>
+          </div>
+          <div class="debug-section-body" id="secMemory">
+            <div class="debug-value" id="dbgMemory">—</div>
+          </div>
+        </div>
+
+        <div class="debug-section">
+          <div class="debug-section-header" onclick="toggleSection('secSummary')">
+            CHAT SUMMARY <span>▾</span>
+          </div>
+          <div class="debug-section-body" id="secSummary">
+            <div class="debug-value" id="dbgSummary">—</div>
+          </div>
+        </div>
+
+        <div class="debug-section">
+          <div class="debug-section-header" onclick="toggleSection('secGeneral')">
+            GENERAL INFO UPDATE <span>▾</span>
+          </div>
+          <div class="debug-section-body" id="secGeneral">
+            <div class="debug-value" id="dbgGeneral">—</div>
+          </div>
+        </div>
+
+        <div class="debug-section">
+          <div class="debug-section-header" onclick="toggleSection('secHealth')">
+            HEALTH ISSUES UPDATE <span>▾</span>
+          </div>
+          <div class="debug-section-body" id="secHealth">
+            <div class="debug-value" id="dbgHealth">—</div>
+          </div>
+        </div>
+
+        <div class="debug-section">
+          <div class="debug-section-header" onclick="toggleSection('secTokens')">
+            TOKEN USAGE <span>▾</span>
+          </div>
+          <div class="debug-section-body" id="secTokens">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <div style="font-size:11px; color:var(--muted)">User Message:</div>
+              <div style="font-size:11px; font-weight:600; text-align:right" id="tokUserMsg">0</div>
+              
+              <div style="font-size:11px; color:var(--muted)">Shared Core:</div>
+              <div style="font-size:11px; font-weight:600; text-align:right" id="tokSharedCore">0</div>
+              
+              <div style="font-size:11px; color:var(--muted)">Skills (Total):</div>
+              <div style="font-size:11px; font-weight:600; text-align:right" id="tokSkills">0</div>
+
+              <!-- Individual Skills Breakdown -->
+              <div id="skillsBreakdown" style="grid-column: 1 / span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding-left: 10px; border-left: 1px solid var(--border); margin: 4px 0;">
+                <!-- Dynamically populated -->
+              </div>
+              
+              <div style="font-size:11px; color:var(--muted)">Thought:</div>
+              <div style="font-size:11px; font-weight:600; text-align:right" id="tokThought">0</div>
+              
+              <div style="font-size:11px; color:var(--muted)">Output:</div>
+              <div style="font-size:11px; font-weight:600; text-align:right" id="tokOutput">0</div>
+              
+              <div style="font-size:11px; color:var(--muted)">History & Schema:</div>
+              <div style="font-size:11px; font-weight:600; text-align:right" id="tokHistorySchema">0</div>
+              
+              <div style="font-size:11px; color:var(--accent); border-top:1px solid var(--border); padding-top:4px; margin-top:4px;">Total:</div>
+              <div style="font-size:11px; color:var(--accent); font-weight:700; text-align:right; border-top:1px solid var(--border); padding-top:4px; margin-top:4px;" id="tokTotal">0</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CTX TAB -->
+    <div class="tab-content" id="tab-ctx">
+      <div class="debug-value" id="ctxContent" style="margin:12px;font-size:11px;max-height:none;">
+        Send a message to see the [CTX] block sent to the LLM.
+      </div>
+    </div>
+
+    <!-- PROMPT TAB -->
+    <div class="tab-content" id="tab-prompt">
+      <div class="prompt-text" id="promptContent">Loading system prompt...</div>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- =============================================================== -->
+  <script>
+    let currentLanguage = "Hinglish";
+
+    // ── Boot ──────────────────────────────────────────────────────
+    window.addEventListener("DOMContentLoaded", () => {
+      loadUserProfile();
+      loadSkills();
+      loadPrompt();
+    });
+
+    async function loadUserProfile() {
+      try {
+        const res = await fetch("/api/user");
+        const data = await res.json();
+        if (!data.ok) return;
+        const doc = data.user_doc;
+        const pi = doc.personal_information || {};
+
+        document.getElementById("displayName").textContent = pi.name || "Unknown";
+
+        const tagsEl = document.getElementById("userTags");
+        tagsEl.innerHTML = "";
+        if (pi.dietary_pref) tagsEl.innerHTML += `<span class="user-tag tag-green">${pi.dietary_pref}</span>`;
+        if (pi.health_issues) tagsEl.innerHTML += `<span class="user-tag tag-red">${pi.health_issues}</span>`;
+        if (pi.location) tagsEl.innerHTML += `<span class="user-tag tag-blue">${pi.location}</span>`;
+
+        const meta = doc.personal_summary || {};
+        const metaEl = document.getElementById("userMeta");
+        const fields = [];
+        if (meta.wake_time) fields.push(`<div style="font-size:12px;color:#8b92b0;margin-top:2px;">&#128336; Wake: <b style="color:#e8eaf0">${meta.wake_time}</b></div>`);
+        if (meta.cook_time) fields.push(`<div style="font-size:12px;color:#8b92b0;margin-top:2px;">&#127859; Cook time: <b style="color:#e8eaf0">${meta.Cook_time || meta.cook_time}</b></div>`);
+        if (meta.favourite_foods) fields.push(`<div style="font-size:12px;color:#8b92b0;margin-top:2px;">&#10084;&#65039; Fav: <b style="color:#e8eaf0">${meta.favourite_foods}</b></div>`);
+        metaEl.innerHTML = fields.join("");
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadSkills() {
+      try {
+        const res = await fetch("/api/skills");
+        const data = await res.json();
+        const el = document.getElementById("skillList");
+        if (!data.ok || !data.skills.length) { el.innerHTML = "<div class='debug-empty'>No skills loaded</div>"; return; }
+        el.innerHTML = data.skills.map(s => `
+        <div class="skill-item">
+          <div class="skill-dot"></div>
+          <span style="color:var(--text);font-weight:500;">${s.name}</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);padding-left:15px;margin-bottom:6px;line-height:1.4;">${s.description}</div>
+      `).join("");
+      } catch (e) { console.error(e); }
+    }
+
+    async function loadPrompt() {
+      try {
+        const res = await fetch("/api/prompt");
+        const data = await res.json();
+        const el = document.getElementById("promptContent");
+        if (data.ok) {
+          el.innerHTML = formatText(data.prompt);
+        } else {
+          el.textContent = "Error loading prompt: " + data.error;
+        }
+      } catch (e) {
+        document.getElementById("promptContent").textContent = "Error: " + e.message;
+      }
+    }
+
+    // ── Language toggle ───────────────────────────────────────────
+    function setLanguage(lang) {
+      currentLanguage = lang;
+      document.getElementById("btnHinglish").classList.toggle("active", lang === "Hinglish");
+      document.getElementById("btnEnglish").classList.toggle("active", lang === "English");
+      document.getElementById("agentStatus").textContent = `● Online \u00b7 ${lang} mode`;
+      showToast(`Language set to ${lang}`);
+    }
+
+    // ── Send message ─────────────────────────────────────────────
+    async function sendMessage() {
+      const input = document.getElementById("queryInput");
+      const query = input.value.trim();
+      if (!query) return;
+
+      input.value = "";
+      autoResize(input);
+
+      // Remove empty state
+      const msgs = document.getElementById("chatMessages");
+      const empty = msgs.querySelector(".empty-state");
+      if (empty) empty.remove();
+
+      // Add user bubble
+      appendBubble("user", query);
+
+      // Typing indicator
+      const typingId = "typing_" + Date.now();
+      const typingEl = document.createElement("div");
+      typingEl.className = "msg-row agent";
+      typingEl.id = typingId;
+      typingEl.innerHTML = `<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+      msgs.appendChild(typingEl);
+      msgs.scrollTop = msgs.scrollHeight;
+
+      document.getElementById("sendBtn").disabled = true;
+
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query, language: currentLanguage }),
+        });
+        const data = await res.json();
+
+        // Remove typing
+        document.getElementById(typingId)?.remove();
+
+        if (!data.ok) {
+          appendBubble("agent", "Error: " + (data.error || "Unknown error"), null);
+        } else {
+          const responseText = data.response || "";
+          const checks = analyzeFormat(responseText);
+          const tok = data.token_usage || {};
+          document.getElementById('tokUserMsg').innerText = tok.user_msg || 0;
+          document.getElementById('tokSharedCore').innerText = tok.shared_core || 0;
+          document.getElementById('tokSkills').innerText = tok.skills || 0;
+          document.getElementById('tokThought').innerText = tok.thought || 0;
+          document.getElementById('tokOutput').innerText = tok.output || 0;
+          document.getElementById('tokHistorySchema').innerText = tok.history_and_schema || 0;
+          document.getElementById('tokTotal').innerText = tok.total || 0;
+
+          // Render skills breakdown
+          const breakdownEl = document.getElementById('skillsBreakdown');
+          breakdownEl.innerHTML = "";
+          if (tok.skills_breakdown) {
+            const activeSkills = data.active_skills || [];
+            Object.entries(tok.skills_breakdown).forEach(([name, count]) => {
+              const isActive = activeSkills.includes(name);
+              const displayCount = isActive ? count : 0;
+              const color = isActive ? "var(--text)" : "var(--muted)";
+              const opacity = isActive ? "1" : "0.5";
+
+              breakdownEl.innerHTML += `
+                <div style="font-size:10px; color:var(--muted); opacity:${opacity}">↳ ${name}:</div>
+                <div style="font-size:10px; font-weight:500; text-align:right; color:${color}; opacity:${opacity}">${displayCount}</div>
+              `;
+            });
+          }
+
+          appendBubble("agent", responseText, checks);
+          updateDebugPanel(data);
+          updateCtxPanel(data.ctx_preview || "");
+        }
+      } catch (e) {
+        document.getElementById(typingId)?.remove();
+        appendBubble("agent", "Network error: " + e.message, null);
+      } finally {
+        document.getElementById("sendBtn").disabled = false;
+        input.focus();
+      }
+    }
+
+    // ── Format analysis ───────────────────────────────────────────
+    function analyzeFormat(text) {
+      const checks = [];
+
+      // 1. Ends with follow-up question?
+      const endsWithQ = /[?]\s*[☺️🙏😊✅💧👍☀️🫡💪🏻]?\s*$/.test(text.trim()) || text.trim().endsWith("?");
+      checks.push({ label: "Closing question", pass: endsWithQ });
+
+      // 2. Has emoji?
+      const hasEmoji = /[\u{1F300}-\u{1FFFF}]|[\u2600-\u27FF]/u.test(text);
+      checks.push({ label: "Has emoji", pass: hasEmoji, warn: !hasEmoji });
+
+      // 3. No banned words (tu, tera, tum) in English mode
+      if (currentLanguage === "English") {
+        const hasBanned = /\b(aap|aapka|khana|subah|thoda|bilkul)\b/i.test(text);
+        checks.push({ label: "No Hindi words", pass: !hasBanned });
+      }
+
+      // 4. No "bot" or "robot"
+      const hasBot = /\b(bot|robot)\b/i.test(text);
+      checks.push({ label: "No 'bot/robot'", pass: !hasBot });
+
+      // 5. Not too long (>300 words for non-plan agents)
+      const wordCount = text.trim().split(/\s+/).length;
+      const okLength = wordCount <= 300;
+      checks.push({ label: `Word count: ${wordCount}`, pass: okLength, warn: !okLength && wordCount < 400 });
+
+      // 6. Has blank lines between segments (para breaks)?
+      const hasSegments = text.includes("\n\n") || text.includes("\\n\\n");
+      checks.push({ label: "Line breaks between segments", pass: hasSegments });
+
+      // 7. ji suffix used?
+      const hasJi = /\bji\b/.test(text);
+      checks.push({ label: "Uses 'ji' suffix", pass: hasJi, warn: !hasJi });
+
+      return checks;
+    }
+
+    // ── Append a bubble ───────────────────────────────────────────
+    function appendBubble(role, text, checks) {
+      const msgs = document.getElementById("chatMessages");
+      const row = document.createElement("div");
+      row.className = `msg-row ${role}`;
+
+      const now = new Date();
+      const time = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+
+      // Render text: bold **text** etc ONLY for agent. User stays plain.
+      let html = (role === "agent") ? formatText(text) : escapeHtml(text);
+
+      row.innerHTML = `
+      <div class="msg-bubble">${html}</div>
+      <div class="msg-time">${time}</div>
+    `;
+
+      // Format checks badges (agent only)
+      if (role === "agent" && checks) {
+        const badgesEl = document.createElement("div");
+        badgesEl.className = "format-checks";
+        checks.forEach(c => {
+          const cls = c.pass ? "check-pass" : (c.warn ? "check-warn" : "check-fail");
+          const icon = c.pass ? "✓" : (c.warn ? "!" : "✗");
+          badgesEl.innerHTML += `<span class="check-badge ${cls}">${icon} ${c.label}</span>`;
+        });
+        row.appendChild(badgesEl);
+      }
+
+      msgs.appendChild(row);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    // ── Debug panel update ────────────────────────────────────────
+    function updateDebugPanel(data) {
+      document.getElementById("debugEmpty").style.display = "none";
+      document.getElementById("debugContent").style.display = "block";
+
+      document.getElementById("dbgResponse").innerHTML = formatText(data.response || "(empty)");
+      document.getElementById("dbgMemory").textContent = data.memory || "(nothing new)";
+      document.getElementById("dbgSummary").textContent = data.current_chat_summary || "(empty)";
+      document.getElementById("dbgGeneral").textContent = data.general_info_update || "(null)";
+      document.getElementById("dbgHealth").textContent = data.health_issues_update || "(null)";
+    }
+
+    function updateCtxPanel(ctx) {
+      document.getElementById("ctxContent").innerHTML = formatText(ctx || "(empty)");
+    }
+
+    function formatText(text) {
+      if (!text) return "";
+      return escapeHtml(text)
+        .replace(/\*\*(.+?)\*\*/gs, "<strong>$1</strong>") // gs for global + dotAll (multiline bold)
+        .replace(/\*(.+?)\*/gs, "<em>$1</em>")
+        .replace(/\\n/g, "\n"); // Handle literal \n if they come from JSON
+    }
+
+    // ── Tabs ──────────────────────────────────────────────────────
+    function switchTab(name) {
+      document.querySelectorAll(".tab-btn").forEach((b, i) => {
+        const names = ["debug", "ctx", "prompt"];
+        b.classList.toggle("active", names[i] === name);
+      });
+      document.querySelectorAll(".tab-content").forEach(c => {
+        c.classList.toggle("active", c.id === "tab-" + name);
+      });
+    }
+
+    function toggleSection(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === "none" ? "" : "none";
+    }
+
+    // ── Utilities ─────────────────────────────────────────────────
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function handleKey(e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+
+    function autoResize(el) {
+      el.style.height = "auto";
+      el.style.height = Math.min(el.scrollHeight, 120) + "px";
+    }
+
+    function clearChat() {
+      const msgs = document.getElementById("chatMessages");
+      msgs.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">💬</div>
+        <h3>Start chatting</h3>
+        <p>Type any message below to test the agent.</p>
+      </div>`;
+      document.getElementById("debugEmpty").style.display = "";
+      document.getElementById("debugContent").style.display = "none";
+      document.getElementById("ctxContent").textContent = "Send a message to see the [CTX] block.";
+      showToast("Chat cleared");
+    }
+
+    function viewPrompt() {
+      switchTab("prompt");
+      document.querySelectorAll(".tab-btn")[2].scrollIntoView({ behavior: "smooth" });
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2200);
+    }
+  </script>
+</body>
+
+</html>

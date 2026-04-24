@@ -1,0 +1,78 @@
+{
+  "_comment": "Edit this file to simulate different users. All fields mirror production Firestore.",
+  "personal_information": {
+    "name": "Vinay",
+    "location": "Pune",
+    "health_issues": "back pain",
+    "general_info": "office worker, sits for long hours, wants to improve flexibility"
+  },
+  "personal_summary": {
+    "_long_term": "24 Apr 2026: Interested in starting yoga for back pain relief. Prefers morning sessions.",
+    "wake_time": "6:30 AM",
+    "sleep_time": "11:00 PM",
+    "yoga_experience": "beginner",
+    "available_time": "20 mins",
+    "mat_available": "yes"
+  },
+  "group_summary": "",
+  "rolling_summaries": {
+    "personal": [
+      {
+        "agent_used": "yoga_agent",
+        "user_query": "tell me about yoga session",
+        "agent_response": "Vinay ji, I can help with that!\n\nWe offer guided yoga sessions daily, focusing on beginner-friendly practices for flexibility and back pain relief.\n\n- Find a quiet space.\n- Join sessions on time.\n- Follow instructor's guidance.\n\nReady to join a session?",
+        "current_chat_summary": ""
+      },
+      {
+        "agent_used": "yoga_agent",
+        "user_query": "tell me the available plans of yoga sessions",
+        "agent_response": "Vinay ji, I can help with that!\n\nWe offer monthly and quarterly plans for unlimited access to all yoga sessions.\n\n- Choose your plan.\n- Complete the payment.\n- Start your yoga journey!\n\nContact us via WhatsApp for any queries.\n\nWhich plan are you interested in?",
+        "current_chat_summary": "User inquired about yoga session plans."
+      },
+      {
+        "agent_used": "yoga_agent",
+        "user_query": "hello",
+        "agent_response": "Hello Vinay ji! How can I help you today?",
+        "current_chat_summary": "User said hello."
+      },
+      {
+        "agent_used": "yoga_agent",
+        "user_query": "who are you",
+        "agent_response": "Main Team Habuild ke taraf se yoga aur wellness assistant hoon!\n\nAapki kya madad kar sakta hoon?",
+        "current_chat_summary": "User asked about identity."
+      },
+      {
+        "agent_used": "yoga_agent",
+        "user_query": "give me meal plan",
+        "agent_response": "Namaste Vinay ji! Main aapki yoga aur wellness mein madad karne ke liye yahan hoon. Meal plan ke liye, aapko ek nutritionist se consult karna chahiye.\n\nAap yoga ke baare mein kuch poochhna chahenge?",
+        "current_chat_summary": "User asked for a meal plan, responded that I cannot provide it and suggested consulting a nutritionist."
+      }
+    ],
+    "group": []
+  },
+  "history": {
+    "personal": [
+      {
+        "user_query": "tell me about yoga session",
+        "agent_response": "Vinay ji, I can help with that!\n\nWe offer guided yoga sessions daily, focusing on beginner-friendly practices for flexibility and back pain relief.\n\n- Find a quiet space.\n- Join sessions on time.\n- Follow instructor's guidance.\n\nReady to join a session?"
+      },
+      {
+        "user_query": "tell me the available plans of yoga sessions",
+        "agent_response": "Vinay ji, I can help with that!\n\nWe offer monthly and quarterly plans for unlimited access to all yoga sessions.\n\n- Choose your plan.\n- Complete the payment.\n- Start your yoga journey!\n\nContact us via WhatsApp for any queries.\n\nWhich plan are you interested in?"
+      },
+      {
+        "user_query": "hello",
+        "agent_response": "Hello Vinay ji! How can I help you today?"
+      },
+      {
+        "user_query": "who are you",
+        "agent_response": "Main Team Habuild ke taraf se yoga aur wellness assistant hoon!\n\nAapki kya madad kar sakta hoon?"
+      },
+      {
+        "user_query": "give me meal plan",
+        "agent_response": "Namaste Vinay ji! Main aapki yoga aur wellness mein madad karne ke liye yahan hoon. Meal plan ke liye, aapko ek nutritionist se consult karna chahiye.\n\nAap yoga ke baare mein kuch poochhna chahenge?"
+      }
+    ],
+    "group": []
+  }
+}
